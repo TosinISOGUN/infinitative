@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 220 40% 13%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 40% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 40% 13%;
+
+    --primary: 220 40% 13%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 40% 13%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 220 40% 13%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 38 92% 50%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 220 40% 13%;
+    --sidebar-foreground: 220 14% 96%;
+    --sidebar-primary: 38 92% 50%;
+    --sidebar-primary-foreground: 220 40% 13%;
+    --sidebar-accent: 220 30% 20%;
+    --sidebar-accent-foreground: 220 14% 96%;
+    --sidebar-border: 220 30% 20%;
+    --sidebar-ring: 38 92% 50%;
+
+    /* Custom tokens */
+    --hero-gradient: linear-gradient(135deg, hsl(220 40% 13%) 0%, hsl(220 30% 20%) 100%);
+    --card-shadow: 0 1px 3px 0 hsl(220 40% 13% / 0.06), 0 1px 2px -1px hsl(220 40% 13% / 0.06);
+    --card-shadow-hover: 0 10px 25px -5px hsl(220 40% 13% / 0.1), 0 8px 10px -6px hsl(220 40% 13% / 0.08);
+    --success: 152 69% 41%;
+    --success-foreground: 0 0% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 220 40% 13%;
+    --info: 205 79% 52%;
+    --info-foreground: 0 0% 98%;
+  }
+
+  .dark {
+    --background: 220 40% 6%;
+    --foreground: 220 14% 96%;
+    --card: 220 40% 10%;
+    --card-foreground: 220 14% 96%;
+    --popover: 220 40% 10%;
+    --popover-foreground: 220 14% 96%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 220 40% 13%;
+    --secondary: 220 30% 20%;
+    --secondary-foreground: 220 14% 96%;
+    --muted: 220 30% 20%;
+    --muted-foreground: 220 9% 60%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 220 40% 13%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 30% 20%;
+    --input: 220 30% 20%;
+    --ring: 38 92% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    @apply tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(38 92% 50%), hsl(38 92% 65%));
+  }
+}
