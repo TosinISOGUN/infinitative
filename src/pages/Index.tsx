@@ -23,12 +23,12 @@ const Index = () => {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/40" />
-        <div className="relative container h-full flex items-center">
+        <div className="relative container h-full flex items-center justify-center md:justify-start">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-lg"
+            className="max-w-lg text-center md:text-left"
           >
             <span className="inline-block bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded mb-4">
               NEW COLLECTION
@@ -39,7 +39,7 @@ const Index = () => {
             <p className="text-primary-foreground/80 mb-6 text-lg">
               Shop the latest trends from trusted vendors worldwide.
             </p>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3 justify-center md:justify-start">
               <Link to="/products">
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                   Shop Now <ArrowRight className="ml-2 h-4 w-4" />
@@ -90,7 +90,7 @@ const Index = () => {
               transition={{ delay: 0.1 * i }}
             >
               <Link
-                to={`/products?category=${cat}`}
+                to={`/products?category=${encodeURIComponent(cat)}`}
                 className="block p-4 rounded-lg border bg-card text-center hover:border-accent hover:shadow-card-hover transition-all duration-300"
               >
                 <span className="text-sm font-medium text-foreground">{cat}</span>

@@ -1,8 +1,21 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, ShoppingCart, User, Heart, Menu, X } from "lucide-react";
+import { Search, ShoppingCart, User, Heart, Menu, X, Package, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -35,9 +48,8 @@ export function Navbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium transition-colors hover:text-accent ${
-                  location.pathname === link.path ? "text-accent" : "text-muted-foreground"
-                }`}
+                className={`text-sm font-medium transition-colors hover:text-accent ${location.pathname === link.path ? "text-accent" : "text-muted-foreground"
+                  }`}
               >
                 {link.label}
               </Link>
@@ -64,11 +76,59 @@ export function Navbar() {
             <Button variant="ghost" size="icon" className="hidden md:inline-flex">
               <Heart className="h-5 w-5" />
             </Button>
-            <Link to="/account">
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-              </Button>
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <User className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src="" alt="John Doe" />
+                        <AvatarFallback className="bg-accent text-accent-foreground text-xs">JD</AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <p className="text-sm font-medium leading-none">John Doe</p>
+                        <p className="text-xs leading-none text-muted-foreground mt-1">
+                          john@example.com
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <Link to="/account">
+                  <DropdownMenuItem className="cursor-pointer">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile / My Account</span>
+                  </DropdownMenuItem>
+                </Link>
+                <Link to="/account">
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Package className="mr-2 h-4 w-4" />
+                    <span>My Orders</span>
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuItem className="cursor-pointer">
+                  <Heart className="mr-2 h-4 w-4" />
+                  <span>Wish List</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <Link to="/login">
+                  <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sign Out</span>
+                  </DropdownMenuItem>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="h-5 w-5" />
               <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-accent text-[10px] font-bold flex items-center justify-center text-accent-foreground">
@@ -120,9 +180,8 @@ export function Navbar() {
                     key={link.path}
                     to={link.path}
                     onClick={() => setMobileOpen(false)}
-                    className={`text-sm font-medium py-2 ${
-                      location.pathname === link.path ? "text-accent" : "text-muted-foreground"
-                    }`}
+                    className={`text-sm font-medium py-2 ${location.pathname === link.path ? "text-accent" : "text-muted-foreground"
+                      }`}
                   >
                     {link.label}
                   </Link>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { SlidersHorizontal } from "lucide-react";
@@ -10,6 +10,10 @@ const Products = () => {
   const [searchParams] = useSearchParams();
   const categoryFilter = searchParams.get("category");
   const [selectedCategory, setSelectedCategory] = useState(categoryFilter || "all");
+
+  useEffect(() => {
+    setSelectedCategory(categoryFilter || "all");
+  }, [categoryFilter]);
 
   const filtered = selectedCategory === "all"
     ? products

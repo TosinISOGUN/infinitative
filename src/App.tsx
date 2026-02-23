@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Account from "./pages/Account";
 import AdminDashboard from "./pages/AdminDashboard";
 import VendorDashboard from "./pages/VendorDashboard";
+import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* Storefront */}
           <Route element={<StorefrontLayout />}>
