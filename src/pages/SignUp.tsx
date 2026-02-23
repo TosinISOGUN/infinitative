@@ -4,20 +4,34 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AuthLayout from "@/components/AuthLayout";
+import { z } from "zod";
+import { registrationSchema } from "@/schema/registerationSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Role = "customer" | "vendor" | "admin";
 
-const Login = () => {
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState<Role>("customer");
   const navigate = useNavigate();
 
-  const dashboardPath =
-    role === "admin" ? "/admin" : role === "vendor" ? "/vendor" : "/account";
+  type CreateAccountType = z.infer<typeof registrationSchema>;
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<CreateAccountType>({
+    resolver: zodResolver(registrationSchema),
+    mode: "onBlur",
+  });
+
+  const submit = (data: CreateAccountType) => {};
 
   return (
     <>
-      <AuthLayout>
+      <AuthLayout switchUI={true}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -30,30 +44,20 @@ const Login = () => {
             Infinitative
           </Link>
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Welcome back
+            Create your account
           </h1>
           <p className="text-muted-foreground mb-8">
-            Sign in to your account to continue
+            Join us today and start selling your products to a wide audience.
+            It's quick and easy to get started!
           </p>
 
-          {/* Role selector */}
-          <div className="flex gap-2 mb-6">
-            {(["customer", "vendor", "admin"] as Role[]).map((r) => (
-              <button
-                key={r}
-                onClick={() => setRole(r)}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors capitalize ${
-                  role === r
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-secondary text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {r}
-              </button>
-            ))}
-          </div>
-
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(submit);
+            }}
+            className="space-y-4"
+          >
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">
                 Email
@@ -61,8 +65,14 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="you@example.com"
+                {...register("email")}
                 className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
               />
+              {errors.email && (
+                <p style={{ color: "red" }} className="text-sm">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">
@@ -72,6 +82,7 @@ const Login = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
+                  {...register('password')}
                   className="w-full h-11 px-4 pr-10 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
                 />
                 <button
@@ -86,6 +97,11 @@ const Login = () => {
                   )}
                 </button>
               </div>
+              {errors.password && (
+                <p style={{ color: "red" }} className="text-sm">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
             <div className="flex items-center justify-between text-sm">
@@ -98,20 +114,25 @@ const Login = () => {
               </a>
             </div>
 
-            <Link to={dashboardPath}>
-              <Button className="w-full h-11 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold mt-2">
-                Sign In <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            <Button
+              type="submit"
+              className="w-full h-11 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold mt-2"
+            >
+              Create Account <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-6" onClick={()=> {
-            navigate('/sign-up')
-          }}>
-            Don't have an account?{" "}
-            <a href="#" className="text-accent hover:underline font-medium">
-              Create one
-            </a>
+          <p className="text-center text-sm text-muted-foreground mt-6">
+            Already have an account?{" "}
+            <Button
+              variant="ghost"
+              onClick={() => {
+                navigate("/login");
+              }}
+              className="text-accent hover:underline font-medium"
+            >
+              Login
+            </Button>
           </p>
         </motion.div>
       </AuthLayout>
@@ -119,4 +140,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

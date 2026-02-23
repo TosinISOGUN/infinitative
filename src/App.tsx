@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import VendorDashboard from "./pages/VendorDashboard";
 import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./pages/NotFound";
+import SignUp from "./pages/SignUp";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
 
           {/* Auth */}
           <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
 
           {/* Admin Dashboard */}
           <Route element={<DashboardLayout role="admin" />}>
