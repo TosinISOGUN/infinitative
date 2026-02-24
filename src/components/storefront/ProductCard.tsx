@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import { motion } from "framer-motion";
-import type { Product } from "@/data/mockData";
+import { Product } from "@/lib/types";
+import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -9,9 +12,15 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
+  const { addToCart, isInCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
+
+  const isSaved = isInWishlist(product.id);
+  const inCart = isInCart(product.id);
 
   return (
     <motion.div
@@ -19,10 +28,10 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
     >
-      <Link to={`/product/${product.id}`} className="group block">
-        <div className="relative overflow-hidden rounded-lg bg-card shadow-card transition-all duration-300 group-hover:shadow-card-hover">
+      <div className="group block h-full">
+        <div className="relative overflow-hidden rounded-lg bg-card shadow-card transition-all duration-300 group-hover:shadow-card-hover h-full flex flex-col">
           {/* Image */}
-          <div className="relative aspect-square overflow-hidden bg-secondary">
+          <Link to={`/product/${product.id}`} className="relative aspect-square overflow-hidden bg-secondary block">
             <img
               src={product.image}
               alt={product.name}
@@ -40,23 +49,43 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             {/* Hover actions */}
             <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-300 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100">
               <div className="flex gap-2">
-                <button className="h-10 w-10 rounded-full bg-card shadow-md flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors">
-                  <Heart className="h-4 w-4" />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleWishlist(product);
+                  }}
+                  className={cn(
+                    "h-10 w-10 rounded-full bg-card shadow-md flex items-center justify-center transition-colors",
+                    isSaved ? "text-accent fill-accent hover:bg-accent hover:text-accent-foreground" : "hover:bg-accent hover:text-accent-foreground"
+                  )}
+                >
+                  <Heart className={cn("h-4 w-4", isSaved && "fill-current")} />
                 </button>
-                <button className="h-10 w-10 rounded-full bg-card shadow-md flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors">
-                  <ShoppingCart className="h-4 w-4" />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addToCart(product);
+                  }}
+                  className={cn(
+                    "h-10 w-10 rounded-full bg-card shadow-md flex items-center justify-center transition-colors",
+                    inCart ? "text-accent fill-accent hover:bg-accent hover:text-accent-foreground" : "hover:bg-accent hover:text-accent-foreground"
+                  )}
+                >
+                  <ShoppingCart className={cn("h-4 w-4", inCart && "fill-current")} />
                 </button>
               </div>
             </div>
-          </div>
+          </Link>
 
           {/* Info */}
-          <div className="p-4">
+          <Link to={`/product/${product.id}`} className="p-4 flex-1 flex flex-col">
             <p className="text-xs text-muted-foreground mb-1">{product.category}</p>
             <h3 className="text-sm font-medium text-foreground line-clamp-2 mb-2 group-hover:text-accent transition-colors">
               {product.name}
             </h3>
-            <div className="flex items-center gap-1 mb-2">
+            <div className="flex items-center gap-1 mb-2 mt-auto">
               <Star className="h-3 w-3 fill-accent text-accent" />
               <span className="text-xs text-muted-foreground">
                 {product.rating} ({product.reviews})
@@ -68,9 +97,9 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                 <span className="text-sm text-muted-foreground line-through">${product.originalPrice}</span>
               )}
             </div>
-          </div>
+          </Link>
         </div>
-      </Link>
+      </div>
     </motion.div>
   );
 }

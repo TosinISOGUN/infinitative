@@ -16,6 +16,15 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -26,7 +35,20 @@ const navLinks = [
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
+  const { itemCount: cartCount } = useCart();
+  const { itemCount: wishlistCount } = useWishlist();
+  const { user, logout, isAuthenticated } = useAuth();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+    }
+  };
 
   return (
     <>
@@ -58,14 +80,16 @@ export function Navbar() {
 
           {/* Search bar (desktop) */}
           <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
-            <div className="relative w-full">
+            <form onSubmit={handleSearch} className="relative w-full">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="What are you looking for?"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full h-10 pl-10 pr-4 rounded-lg border bg-secondary/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
               />
-            </div>
+            </form>
           </div>
 
           {/* Right actions */}
@@ -73,68 +97,121 @@ export function Navbar() {
             <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setSearchOpen(!searchOpen)}>
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="hidden md:inline-flex">
-              <Heart className="h-5 w-5" />
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src="" alt="John Doe" />
-                        <AvatarFallback className="bg-accent text-accent-foreground text-xs">JD</AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col">
-                        <p className="text-sm font-medium leading-none">John Doe</p>
-                        <p className="text-xs leading-none text-muted-foreground mt-1">
-                          john@example.com
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <Link to="/account">
-                  <DropdownMenuItem className="cursor-pointer">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile / My Account</span>
-                  </DropdownMenuItem>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/wishlist">
+                  <Button variant="ghost" size="icon" className="hidden md:inline-flex relative">
+                    <Heart className="h-5 w-5" />
+                    {wishlistCount > 0 && (
+                      <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-accent text-[10px] font-bold flex items-center justify-center text-accent-foreground">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </Button>
                 </Link>
-                <Link to="/account">
-                  <DropdownMenuItem className="cursor-pointer">
-                    <Package className="mr-2 h-4 w-4" />
-                    <span>My Orders</span>
-                  </DropdownMenuItem>
+              </TooltipTrigger>
+              <TooltipContent>Wishlist</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <User className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    {isAuthenticated ? (
+                      <>
+                        <DropdownMenuLabel className="font-normal">
+                          <div className="flex flex-col space-y-1">
+                            <div className="flex items-center gap-2">
+                              <Avatar className="h-8 w-8">
+                                <AvatarFallback className="bg-accent text-accent-foreground text-xs">
+                                  {user?.name?.split(" ").map(n => n[0]).join("") || "U"}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="flex flex-col">
+                                <p className="text-sm font-medium leading-none">{user?.name}</p>
+                                <p className="text-xs leading-none text-muted-foreground mt-1">
+                                  {user?.email}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <Link to="/account">
+                          <DropdownMenuItem className="cursor-pointer">
+                            <User className="mr-2 h-4 w-4" />
+                            <span>Profile / My Account</span>
+                          </DropdownMenuItem>
+                        </Link>
+                        <Link to="/orders">
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Package className="mr-2 h-4 w-4" />
+                            <span>My Orders</span>
+                          </DropdownMenuItem>
+                        </Link>
+                        <Link to="/wishlist">
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Heart className="mr-2 h-4 w-4" />
+                            <span>Wish List</span>
+                          </DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuItem className="cursor-pointer">
+                          <Settings className="mr-2 h-4 w-4" />
+                          <span>Settings</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="cursor-pointer text-destructive focus:text-destructive"
+                          onClick={() => logout()}
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          <span>Sign Out</span>
+                        </DropdownMenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <DropdownMenuLabel>Existing User?</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <Link to="/login">
+                          <DropdownMenuItem className="cursor-pointer">
+                            <LogOut className="mr-2 h-4 w-4 rotate-180" />
+                            <span>Sign In</span>
+                          </DropdownMenuItem>
+                        </Link>
+                        <Link to="/signup">
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Package className="mr-2 h-4 w-4" />
+                            <span>Create Account</span>
+                          </DropdownMenuItem>
+                        </Link>
+                      </>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TooltipTrigger>
+              <TooltipContent>Account</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/cart">
+                  <Button variant="ghost" size="icon" className="relative">
+                    <ShoppingCart className="h-5 w-5" />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-accent text-[10px] font-bold flex items-center justify-center text-accent-foreground">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Button>
                 </Link>
-                <DropdownMenuItem className="cursor-pointer">
-                  <Heart className="mr-2 h-4 w-4" />
-                  <span>Wish List</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <Link to="/login">
-                  <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Sign Out</span>
-                  </DropdownMenuItem>
-                </Link>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-accent text-[10px] font-bold flex items-center justify-center text-accent-foreground">
-                3
-              </span>
-            </Button>
+              </TooltipTrigger>
+              <TooltipContent>Shopping Cart</TooltipContent>
+            </Tooltip>
             <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
@@ -151,15 +228,17 @@ export function Navbar() {
               className="md:hidden overflow-hidden border-t"
             >
               <div className="container py-3">
-                <div className="relative">
+                <form onSubmit={handleSearch} className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <input
                     type="text"
                     placeholder="Search products..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full h-10 pl-10 pr-4 rounded-lg border bg-secondary/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
                     autoFocus
                   />
-                </div>
+                </form>
               </div>
             </motion.div>
           )}
@@ -186,9 +265,11 @@ export function Navbar() {
                     {link.label}
                   </Link>
                 ))}
-                <Link to="/login" onClick={() => setMobileOpen(false)}>
-                  <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Sign In</Button>
-                </Link>
+                {!isAuthenticated && (
+                  <Link to="/login" onClick={() => setMobileOpen(false)}>
+                    <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Sign In</Button>
+                  </Link>
+                )}
               </nav>
             </motion.div>
           )}

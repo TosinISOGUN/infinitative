@@ -15,16 +15,16 @@ export function Footer() {
             <h4 className="font-semibold mb-3 text-sm">Shop</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
               <li><Link to="/products" className="hover:text-accent transition-colors">All Products</Link></li>
-              <li><Link to="/products" className="hover:text-accent transition-colors">New Arrivals</Link></li>
-              <li><Link to="/products" className="hover:text-accent transition-colors">Best Sellers</Link></li>
+              <li><Link to="/faq" className="hover:text-accent transition-colors">Help Center / FAQ</Link></li>
+              <li><Link to="/terms" className="hover:text-accent transition-colors">Terms & Privacy</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-3 text-sm">Company</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
-              <li><Link to="/" className="hover:text-accent transition-colors">About Us</Link></li>
-              <li><Link to="/" className="hover:text-accent transition-colors">Contact</Link></li>
-              <li><Link to="/" className="hover:text-accent transition-colors">Careers</Link></li>
+              <li><Link to="/about" className="hover:text-accent transition-colors">About Us</Link></li>
+              <li><Link to="/about" className="hover:text-accent transition-colors">Our Values</Link></li>
+              <li><Link to="/terms" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
           <div>

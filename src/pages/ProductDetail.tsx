@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Star, ShoppingCart, Heart, Truck, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { products } from "@/data/mockData";
+import ReviewSection from "@/components/storefront/ReviewSection";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -88,6 +89,13 @@ const ProductDetail = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Review Section */}
+      <ReviewSection
+        rating={product.rating}
+        totalReviews={product.reviews}
+        reviews={product.recentReviews || []}
+      />
     </div>
   );
 };

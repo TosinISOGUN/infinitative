@@ -3,15 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Role } from "@/lib/types";
 
-type Role = "customer" | "vendor" | "admin";
-
-const Login = () => {
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState<Role>("customer");
   const navigate = useNavigate();
-
-  const dashboardPath = role === "admin" ? "/admin" : role === "vendor" ? "/vendor" : "/account";
 
   return (
     <div className="min-h-screen flex">
@@ -25,18 +22,19 @@ const Login = () => {
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </Button>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md"
         >
           <Link to="/" className="text-2xl font-bold text-foreground mb-2 inline-block">Infinitative</Link>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back</h1>
-          <p className="text-muted-foreground mb-8">Sign in to your account to continue</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Create an account</h1>
+          <p className="text-muted-foreground mb-8">Join the marketplace today</p>
 
           {/* Role selector */}
           <div className="flex gap-2 mb-6">
-            {(["customer", "vendor", "admin"] as Role[]).map((r) => (
+            {(["customer", "vendor"] as Role[]).map((r) => (
               <button
                 key={r}
                 onClick={() => setRole(r)}
@@ -51,6 +49,14 @@ const Login = () => {
           </div>
 
           <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Full Name</label>
+              <input
+                type="text"
+                placeholder="John Doe"
+                className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+              />
+            </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
               <input
@@ -77,24 +83,14 @@ const Login = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-muted-foreground">
-                <input type="checkbox" className="rounded border-input" />
-                Remember me
-              </label>
-              <a href="#" className="text-accent hover:underline">Forgot password?</a>
-            </div>
-
-            <Link to={dashboardPath}>
-              <Button className="w-full h-11 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold mt-2">
-                Sign In <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            <Button className="w-full h-11 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold mt-2">
+              Create Account <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-6">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-accent hover:underline font-medium">Create one</Link>
+            Already have an account?{" "}
+            <Link to="/login" className="text-accent hover:underline font-medium">Sign In</Link>
           </p>
         </motion.div>
       </div>
@@ -110,9 +106,13 @@ const Login = () => {
           <div className="h-20 w-20 rounded-2xl bg-accent/20 flex items-center justify-center mx-auto mb-8">
             <span className="text-3xl font-bold text-accent">∞</span>
           </div>
-          <h2 className="text-3xl font-bold text-primary-foreground mb-4">Start Selling Today</h2>
+          <h2 className="text-3xl font-bold text-primary-foreground mb-4">
+            {role === "vendor" ? "Sell to millions" : "Shop premium items"}
+          </h2>
           <p className="text-primary-foreground/70">
-            Join thousands of vendors on our platform and grow your business with powerful tools and analytics.
+            {role === "vendor"
+              ? "Join thousands of vendors and grow your business with our powerful platform."
+              : "Discover unique products from trusted vendors around the globe."}
           </p>
         </motion.div>
       </div>
@@ -120,4 +120,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

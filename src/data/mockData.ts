@@ -1,44 +1,4 @@
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  category: string;
-  description: string;
-  rating: number;
-  reviews: number;
-  vendor: string;
-}
-
-export interface Purchase {
-  id: string;
-  userName: string;
-  userId: string;
-  product: string;
-  date: string;
-  status: "completed" | "pending" | "cancelled";
-  amount: number;
-}
-
-export interface Vendor {
-  id: string;
-  name: string;
-  email: string;
-  status: "active" | "inactive" | "pending";
-  products: number;
-  revenue: number;
-  joinedDate: string;
-}
-
-export interface Order {
-  id: string;
-  product: string;
-  quantity: number;
-  total: number;
-  date: string;
-  status: "delivered" | "processing" | "shipped";
-}
+import { Product, Purchase, Vendor, Order, Review, User } from "@/lib/types";
 
 export const categories = [
   "Electronics",
@@ -50,9 +10,51 @@ export const categories = [
 ];
 
 export const products: Product[] = [
-  { id: "1", name: "Wireless Noise-Cancelling Headphones", price: 299.99, originalPrice: 349.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80", category: "Electronics", description: "Premium wireless headphones with active noise cancellation, 30-hour battery life, and superior sound quality.", rating: 4.8, reviews: 1243, vendor: "AudioTech" },
-  { id: "2", name: "Smart Fitness Watch Pro", price: 199.99, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80", category: "Gadgets", description: "Advanced fitness tracking with GPS, heart rate monitor, and 7-day battery life.", rating: 4.6, reviews: 892, vendor: "FitGear" },
-  { id: "3", name: "Premium Leather Backpack", price: 149.99, originalPrice: 189.99, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80", category: "Fashion", description: "Handcrafted genuine leather backpack with laptop compartment and ergonomic design.", rating: 4.7, reviews: 567, vendor: "UrbanStyle" },
+  {
+    id: "1",
+    name: "Wireless Noise-Cancelling Headphones",
+    price: 299.99,
+    originalPrice: 349.99,
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80",
+    category: "Electronics",
+    description: "Premium wireless headphones with active noise cancellation, 30-hour battery life, and superior sound quality.",
+    rating: 4.8,
+    reviews: 1243,
+    vendor: "AudioTech",
+    recentReviews: [
+      { id: "rev-1", userId: "u1", userName: "Alex Rivera", rating: 5, comment: "Absolutely incredible sound quality. The noise cancellation is way better than my older pair.", date: "2024-02-15" },
+      { id: "rev-2", userId: "u2", userName: "Sarah Smith", rating: 4, comment: "Very comfortable for long flights. The battery is solid. Minimalist design is a plus.", date: "2024-02-10" }
+    ]
+  },
+  {
+    id: "2",
+    name: "Smart Fitness Watch Pro",
+    price: 199.99,
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80",
+    category: "Gadgets",
+    description: "Advanced fitness tracking with GPS, heart rate monitor, and 7-day battery life.",
+    rating: 4.6,
+    reviews: 892,
+    vendor: "FitGear",
+    recentReviews: [
+      { id: "rev-3", userId: "u3", userName: "John Doe", rating: 5, comment: "Best fitness tracker I've used. Accurate heart rate and the app is very intuitive.", date: "2024-02-14" }
+    ]
+  },
+  {
+    id: "3",
+    name: "Premium Leather Backpack",
+    price: 149.99,
+    originalPrice: 189.99,
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80",
+    category: "Fashion",
+    description: "Handcrafted genuine leather backpack with laptop compartment and ergonomic design.",
+    rating: 4.7,
+    reviews: 567,
+    vendor: "UrbanStyle",
+    recentReviews: [
+      { id: "rev-4", userId: "u4", userName: "Emily Chen", rating: 5, comment: "The leather quality is top-notch. It looks even better in person.", date: "2024-02-12" }
+    ]
+  },
   { id: "4", name: "Minimalist Desk Lamp", price: 79.99, image: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=400&q=80", category: "Home & Kitchen", description: "Sleek LED desk lamp with adjustable brightness and color temperature.", rating: 4.5, reviews: 334, vendor: "HomeLux" },
   { id: "5", name: "Running Shoes Ultra Boost", price: 179.99, originalPrice: 219.99, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80", category: "Sports & Outdoor", description: "Lightweight running shoes with responsive cushioning and breathable mesh upper.", rating: 4.9, reviews: 2100, vendor: "SprintFit" },
   { id: "6", name: "Organic Skincare Set", price: 89.99, image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&q=80", category: "Health & Beauty", description: "Complete skincare routine with natural, organic ingredients.", rating: 4.4, reviews: 456, vendor: "GlowNatural" },
@@ -99,7 +101,33 @@ export const dashboardMetrics = {
     totalProducts: 24,
     totalOrders: 342,
     totalRevenue: 45200,
+    totalOrdersChange: 12.5,
+    totalRevenueChange: 8.3,
     pendingOrders: 18,
-    growth: 8.3,
   },
 };
+
+export const revenueHistory = [
+  { name: "Jan", total: 1200, revenue: 12000 },
+  { name: "Feb", total: 2100, revenue: 15000 },
+  { name: "Mar", total: 1800, revenue: 18000 },
+  { name: "Apr", total: 2400, revenue: 22000 },
+  { name: "May", total: 3200, revenue: 30000 },
+  { name: "Jun", total: 2800, revenue: 28000 },
+  { name: "Jul", total: 4800, revenue: 35000 },
+  { name: "Aug", total: 5200, revenue: 42000 },
+  { name: "Sep", total: 4900, revenue: 38000 },
+  { name: "Oct", total: 5800, revenue: 45000 },
+  { name: "Nov", total: 6200, revenue: 52000 },
+  { name: "Dec", total: 7000, revenue: 60000 },
+];
+
+export const allUsers: User[] = [
+  { id: "USR-1001", name: "Sarah Johnson", email: "sarah@example.com", role: "customer" },
+  { id: "USR-1002", name: "Michael Chen", email: "michael@example.com", role: "customer" },
+  { id: "USR-1003", name: "Emma Davis", email: "emma@example.com", role: "customer" },
+  { id: "USR-1004", name: "James Wilson", email: "james@example.com", role: "customer" },
+  { id: "VND-001", name: "AudioTech Admin", email: "admin@audiotech.com", role: "vendor" },
+  { id: "VND-002", name: "FitGear Sales", email: "sales@fitgear.com", role: "vendor" },
+];
+
