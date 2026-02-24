@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, ShoppingCart, User, Heart, Menu, X, Package, Settings, LogOut } from "lucide-react";
+import { Search, ShoppingCart, User, Heart, Menu, X, Package, Settings, LogOut, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -87,8 +87,28 @@ export function Navbar() {
                 placeholder="What are you looking for?"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch(e);
+                  }
+                }}
                 className="w-full h-10 pl-10 pr-4 rounded-lg border bg-secondary/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
               />
+              <AnimatePresence>
+                {searchQuery && (
+                  <motion.button
+                    type="submit"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="absolute right-3 inset-y-0 my-auto flex items-center justify-center h-6 w-6 rounded-md border bg-background/80 text-accent hover:bg-accent hover:text-accent-foreground transition-colors"
+                  >
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </motion.button>
+                )}
+              </AnimatePresence>
             </form>
           </div>
 
@@ -235,9 +255,29 @@ export function Navbar() {
                     placeholder="Search products..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearch(e);
+                      }
+                    }}
                     className="w-full h-10 pl-10 pr-4 rounded-lg border bg-secondary/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
                     autoFocus
                   />
+                  <AnimatePresence>
+                    {searchQuery && (
+                      <motion.button
+                        type="submit"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="absolute right-3 inset-y-0 my-auto flex items-center justify-center h-6 w-6 rounded-md border bg-background/80 text-accent hover:bg-accent hover:text-accent-foreground transition-colors"
+                      >
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </motion.button>
+                    )}
+                  </AnimatePresence>
                 </form>
               </div>
             </motion.div>
