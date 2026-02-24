@@ -4,10 +4,17 @@ import { ArrowLeft, Star, ShoppingCart, Heart, Truck, RotateCcw } from "lucide-r
 import { Button } from "@/components/ui/button";
 import { products } from "@/data/mockData";
 import ReviewSection from "@/components/storefront/ReviewSection";
+import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
+import { cn } from "@/lib/utils";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const product = products.find((p) => p.id === id);
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
+  const isFavorited = product ? isInWishlist(product.id) : false;
 
   if (!product) {
     return (
@@ -69,11 +76,20 @@ const ProductDetail = () => {
           </p>
 
           <div className="flex gap-3 mb-8">
-            <Button size="lg" className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Button
+              size="lg"
+              className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold"
+              onClick={() => product && addToCart(product)}
+            >
               <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
             </Button>
-            <Button size="lg" variant="outline">
-              <Heart className="h-4 w-4" />
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => product && toggleWishlist(product)}
+              className={cn("transition-colors", isFavorited && "bg-accent/10 border-accent text-accent")}
+            >
+              <Heart className={cn("h-4 w-4 transition-all", isFavorited && "fill-accent")} />
             </Button>
           </div>
 
