@@ -65,7 +65,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 ml-8 lg:ml-12">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -79,7 +79,7 @@ export function Navbar() {
           </nav>
 
           {/* Search bar (desktop) */}
-          <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
+          <div className="hidden lg:flex items-center flex-1 max-w-md mx-8">
             <form onSubmit={handleSearch} className="relative w-full">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
@@ -114,13 +114,13 @@ export function Navbar() {
 
           {/* Right actions */}
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setSearchOpen(!searchOpen)}>
+            <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSearchOpen(!searchOpen)}>
               <Search className="h-5 w-5" />
             </Button>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link to="/wishlist">
-                  <Button variant="ghost" size="icon" className="hidden md:inline-flex relative">
+                  <Button variant="ghost" size="icon" className="hidden lg:inline-flex relative">
                     <Heart className="h-5 w-5" />
                     {wishlistCount > 0 && (
                       <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-accent text-[10px] font-bold flex items-center justify-center text-accent-foreground">
@@ -245,7 +245,7 @@ export function Navbar() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden overflow-hidden border-t"
+              className="lg:hidden overflow-hidden border-t"
             >
               <div className="container py-3">
                 <form onSubmit={handleSearch} className="relative">
@@ -291,7 +291,7 @@ export function Navbar() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden overflow-hidden border-t"
+              className="lg:hidden overflow-hidden border-t"
             >
               <nav className="container py-4 flex flex-col gap-3">
                 {navLinks.map((link) => (

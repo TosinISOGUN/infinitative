@@ -39,8 +39,8 @@ const SignUp = () => {
                 key={r}
                 onClick={() => setRole(r)}
                 className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors capitalize ${role === r
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-secondary text-muted-foreground hover:text-foreground"
+                  ? "bg-accent text-accent-foreground"
+                  : "bg-secondary text-muted-foreground hover:text-foreground"
                   }`}
               >
                 {r}
@@ -96,24 +96,36 @@ const SignUp = () => {
       </div>
 
       {/* Right - Visual */}
-      <div className="hidden lg:flex flex-1 bg-primary items-center justify-center p-12">
+      <div className="hidden lg:flex flex-1 items-center justify-center p-12 relative overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=1744&auto=format&fit=crop"
+          alt="Premium Marketplace"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-primary/60 backdrop-blur-[2px]" />
+
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-center max-w-md"
+          className="text-center max-w-md relative z-10 bg-white/10 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl"
         >
-          <div className="h-20 w-20 rounded-2xl bg-accent/20 flex items-center justify-center mx-auto mb-8">
+          <div className="h-20 w-20 rounded-2xl bg-accent/20 flex items-center justify-center mx-auto mb-8 border border-white/10">
             <span className="text-3xl font-bold text-accent">∞</span>
           </div>
-          <h2 className="text-3xl font-bold text-primary-foreground mb-4">
+          <h2 className="text-3xl font-bold text-white mb-4">
             {role === "vendor" ? "Sell to millions" : "Shop premium items"}
           </h2>
-          <p className="text-primary-foreground/70">
+          <p className="text-white/80 leading-relaxed">
             {role === "vendor"
               ? "Join thousands of vendors and grow your business with our powerful platform."
               : "Discover unique products from trusted vendors around the globe."}
           </p>
+          <div className="mt-8 flex justify-center gap-4">
+            <div className="h-1 w-4 rounded-full bg-white/30" />
+            <div className="h-1 w-12 rounded-full bg-accent" />
+            <div className="h-1 w-4 rounded-full bg-white/30" />
+          </div>
         </motion.div>
       </div>
     </div>
