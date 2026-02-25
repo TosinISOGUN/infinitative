@@ -1,6 +1,6 @@
 # Infinitative — Premium E-commerce Marketplace
 
-Infinitative is a comprehensive multi-vendor e-commerce platform built with modern technologies. It provides a seamless experience for customers, powerful dashboards for vendors, and robust management tools for administrators.
+Infinitative is a comprehensive multi-vendor e-commerce platform built with modern technologies. It provides a seamless experience for customers, powerful dashboards for vendors, and robust management tools for administrators!
 
 ## 🚀 Getting Started
 
