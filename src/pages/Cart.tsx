@@ -4,12 +4,13 @@ import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, ShieldCheck, ArrowLeft }
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
+import { formatCurrency } from "@/lib/utils";
 
 const Cart = () => {
   const { cart: cartItems, updateQuantity, removeFromCart, subtotal } = useCart();
   const navigate = useNavigate();
 
-  const shipping = subtotal > 100 ? 0 : 15;
+  const shipping = subtotal > 100000 ? 0 : 15000;
   const total = subtotal + shipping;
 
   return (
@@ -45,7 +46,7 @@ const Cart = () => {
                         {item.name}
                       </h3>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-1">{item.vendor}</p>
-                      <p className="font-bold text-accent">${item.price}</p>
+                      <p className="font-bold text-accent">{formatCurrency(item.price)}</p>
                     </div>
                   </div>
 
@@ -84,15 +85,15 @@ const Cart = () => {
                 <div className="space-y-3 text-sm mb-6">
                   <div className="flex justify-between text-muted-foreground">
                     <span>Subtotal</span>
-                    <span className="text-foreground">${subtotal.toFixed(2)}</span>
+                    <span className="text-foreground">{formatCurrency(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>Shipping</span>
-                    <span className="text-foreground">{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
+                    <span className="text-foreground">{shipping === 0 ? "FREE" : formatCurrency(shipping)}</span>
                   </div>
                   <div className="border-t pt-3 flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span className="text-accent">${total.toFixed(2)}</span>
+                    <span className="text-accent">{formatCurrency(total)}</span>
                   </div>
                 </div>
 

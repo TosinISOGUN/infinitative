@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { orders } from "@/data/mockData";
 import { StatusBadge } from "@/components/dashboard/StatusBadge";
 import { Link } from "react-router-dom";
+import { formatCurrency } from "@/lib/utils";
 
 const Orders = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Orders = () => {
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground uppercase font-semibold tracking-wider mb-1">Total</p>
-                      <p className="text-sm font-medium text-foreground">${order.total}</p>
+                      <p className="text-sm font-medium text-foreground">{formatCurrency(order.total)}</p>
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground uppercase font-semibold tracking-wider mb-1">Status</p>

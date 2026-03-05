@@ -54,7 +54,7 @@ export function Navbar() {
     <>
       {/* Top announcement bar */}
       <div className="bg-primary text-primary-foreground text-center text-sm py-2 px-4">
-        Free shipping on orders over $100 — <span className="text-gradient font-semibold">Shop Now</span>
+        Free shipping on orders over ₦100,000 — <span className="text-gradient font-semibold">Shop Now</span>
       </div>
 
       <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b">

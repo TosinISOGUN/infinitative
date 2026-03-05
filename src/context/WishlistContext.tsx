@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Product } from "@/lib/types";
 import { toast } from "sonner";
+import { products } from "@/data/mockData";
 
 interface WishlistContextType {
   wishlist: Product[];
@@ -24,6 +25,16 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
       return [];
     }
   });
+
+  useEffect(() => {
+    // Sync prices with source of truth on load to prevent stale prices from localStorage
+    setWishlist((prev) =>
+      prev.map(item => {
+        const latestProduct = products.find(p => p.id === item.id);
+        return latestProduct ? { ...item, price: latestProduct.price, originalPrice: latestProduct.originalPrice } : item;
+      })
+    );
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("infinitative_wishlist", JSON.stringify(wishlist));

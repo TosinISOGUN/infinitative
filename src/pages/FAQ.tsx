@@ -41,7 +41,7 @@ const faqData = [
       },
       {
         q: "Do you offer free shipping?",
-        a: "We offer free standard shipping on all orders over $100 within the continental US.",
+        a: "We offer free standard shipping on all orders over ₦100,000 across Nigeria.",
       },
     ],
   },

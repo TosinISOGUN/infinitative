@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Product, CartItem } from "@/lib/types";
 import { toast } from "sonner";
+import { products } from "@/data/mockData";
 
 interface CartContextType {
   cart: CartItem[];
@@ -29,6 +30,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   });
 
   useEffect(() => {
+    // Sync prices with source of truth on load to prevent stale prices from localStorage
+    setCart((prev) =>
+      prev.map(item => {
+        const latestProduct = products.find(p => p.id === item.id);
+        return latestProduct ? { ...item, price: latestProduct.price } : item;
+      })
+    );
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("infinitative_cart", JSON.stringify(cart));
   }, [cart]);
 
@@ -38,7 +49,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       if (existing) {
         toast.info(`Increased quantity of ${product.name}`);
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id ? { ...item, quantity: item.quantity + 1, price: product.price } : item
         );
       }
       toast.success(`${product.name} added to cart`);

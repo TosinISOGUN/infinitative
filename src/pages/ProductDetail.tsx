@@ -6,7 +6,7 @@ import { products } from "@/data/mockData";
 import ReviewSection from "@/components/storefront/ReviewSection";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -63,9 +63,9 @@ const ProductDetail = () => {
           </div>
 
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-3xl font-bold text-foreground">${product.price}</span>
+            <span className="text-3xl font-bold text-foreground">{formatCurrency(product.price)}</span>
             {product.originalPrice && (
-              <span className="text-lg text-muted-foreground line-through">${product.originalPrice}</span>
+              <span className="text-lg text-muted-foreground line-through">{formatCurrency(product.originalPrice)}</span>
             )}
           </div>
 
@@ -96,7 +96,7 @@ const ProductDetail = () => {
           <div className="space-y-3 border-t pt-6">
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <Truck className="h-4 w-4 text-accent" />
-              Free shipping on orders over $100
+              Free shipping on orders over ₦100,000
             </div>
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <RotateCcw className="h-4 w-4 text-accent" />

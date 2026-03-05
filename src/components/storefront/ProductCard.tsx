@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Product } from "@/lib/types";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -92,9 +92,9 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-foreground">${product.price}</span>
+              <span className="text-base font-bold text-foreground">{formatCurrency(product.price)}</span>
               {product.originalPrice && (
-                <span className="text-sm text-muted-foreground line-through">${product.originalPrice}</span>
+                <span className="text-sm text-muted-foreground line-through">{formatCurrency(product.originalPrice)}</span>
               )}
             </div>
           </Link>

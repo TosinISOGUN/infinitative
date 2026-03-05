@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import {
   Package,
   ShoppingCart,
-  DollarSign,
+  Banknote,
   Clock,
   Plus,
   Search,
@@ -19,6 +19,7 @@ import { dashboardMetrics, purchases, products, revenueHistory } from "@/data/mo
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { formatCurrency } from "@/lib/utils";
 import {
   AreaChart,
   Area,
@@ -57,7 +58,7 @@ const VendorDashboard = () => {
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricCard title="My Products" value={m.totalProducts} icon={Package} index={0} />
             <MetricCard title="Total Orders" value={m.totalOrders} change={`${m.totalOrdersChange}%`} icon={ShoppingCart} index={1} />
-            <MetricCard title="Revenue" value={`$${m.totalRevenue.toLocaleString()}`} change={`${m.totalRevenueChange}%`} icon={DollarSign} index={2} />
+            <MetricCard title="Revenue" value={formatCurrency(m.totalRevenue)} change={`${m.totalRevenueChange}%`} icon={Banknote} index={2} />
             <MetricCard title="Pending" value={m.pendingOrders} icon={Clock} index={3} />
           </div>
 
@@ -86,7 +87,7 @@ const VendorDashboard = () => {
                       axisLine={false}
                       tickLine={false}
                       tick={{ fill: '#9CA3AF', fontSize: 12 }}
-                      tickFormatter={(value) => `$${value}`}
+                      tickFormatter={(value) => formatCurrency(value)}
                     />
                     <Tooltip
                       contentStyle={{
@@ -122,7 +123,7 @@ const VendorDashboard = () => {
                       <h4 className="font-bold text-sm truncate">{product.name}</h4>
                       <p className="text-xs text-muted-foreground">{product.reviews} sales</p>
                     </div>
-                    <div className="text-sm font-bold">${product.price}</div>
+                    <div className="text-sm font-bold">{formatCurrency(product.price)}</div>
                   </div>
                 ))}
               </div>
@@ -170,7 +171,7 @@ const VendorDashboard = () => {
                         </div>
                       </td>
                       <td className="hidden lg:table-cell py-4 px-6 text-muted-foreground">{p.category}</td>
-                      <td className="py-4 px-4 sm:px-6 font-bold text-accent text-sm sm:text-base">${p.price}</td>
+                      <td className="py-4 px-4 sm:px-6 font-bold text-accent text-sm sm:text-base">{formatCurrency(p.price)}</td>
                       <td className="hidden md:table-cell py-4 px-6">
                         <div className="flex items-center gap-1">
                           <span className="font-medium">{p.rating}</span>

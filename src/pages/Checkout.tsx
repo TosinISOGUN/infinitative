@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
+import { formatCurrency } from "@/lib/utils";
 
 const steps = [
   { id: "shipping", title: "Shipping", icon: <MapPin className="h-5 w-5" /> },
@@ -27,7 +28,7 @@ const Checkout = () => {
   const { cart, subtotal, clearCart } = useCart();
   const navigate = useNavigate();
 
-  const shipping = subtotal > 100 ? 0 : 15;
+  const shipping = subtotal > 100000 ? 0 : 15000;
   const total = subtotal + shipping;
 
   const nextStep = () => {
@@ -71,8 +72,8 @@ const Checkout = () => {
               <div key={step.id} className="relative z-10 flex flex-col items-center gap-1 sm:gap-2">
                 <div
                   className={`w-9 h-9 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-colors duration-300 ${idx <= currentStep
-                      ? "bg-accent text-accent-foreground"
-                      : "bg-card border text-muted-foreground"
+                    ? "bg-accent text-accent-foreground"
+                    : "bg-card border text-muted-foreground"
                     }`}
                 >
                   {/* Scale icon for mobile */}
@@ -188,9 +189,9 @@ const Checkout = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="font-bold text-sm truncate">{item.name}</h4>
-                          <p className="text-xs text-muted-foreground">{item.quantity} x ${item.price}</p>
+                          <p className="text-xs text-muted-foreground">{item.quantity} x {formatCurrency(item.price)}</p>
                         </div>
-                        <p className="font-bold text-sm">${(item.price * item.quantity).toFixed(2)}</p>
+                        <p className="font-bold text-sm">{formatCurrency(item.price * item.quantity)}</p>
                       </div>
                     ))}
                   </div>
@@ -250,24 +251,24 @@ const Checkout = () => {
             <div className="space-y-4 text-sm mb-6 pb-6 border-b">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Original Price</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{formatCurrency(subtotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Savings</span>
-                <span className="text-green-500">-$0.00</span>
+                <span className="text-green-500">-{formatCurrency(0)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Store Coupon</span>
-                <span className="text-green-500">-$0.00</span>
+                <span className="text-green-500">-{formatCurrency(0)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Shipping</span>
-                <span>{shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}</span>
+                <span>{shipping === 0 ? "FREE" : formatCurrency(shipping)}</span>
               </div>
             </div>
             <div className="flex justify-between items-center mb-1">
               <span className="font-bold text-lg">Total</span>
-              <span className="font-bold text-2xl text-accent">${total.toFixed(2)}</span>
+              <span className="font-bold text-2xl text-accent">{formatCurrency(total)}</span>
             </div>
             <p className="text-[10px] text-muted-foreground text-center mt-6">
               Tax calculated at next step if applicable.

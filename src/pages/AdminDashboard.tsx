@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import {
   Users,
   ShoppingCart,
-  DollarSign,
+  Banknote,
   Store,
   Plus,
   Trash2,
@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { dashboardMetrics, purchases, vendors, allUsers, revenueHistory } from "@/data/mockData";
+import { formatCurrency } from "@/lib/utils";
 import {
   BarChart,
   Bar,
@@ -74,7 +75,7 @@ const AdminDashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricCard title="Total Users" value={m.totalUsers.toLocaleString()} change={`${m.growth}%`} icon={Users} index={0} />
             <MetricCard title="Total Purchases" value={m.totalPurchases.toLocaleString()} icon={ShoppingCart} index={1} />
-            <MetricCard title="Total Revenue" value={`$${(m.totalRevenue / 1000).toFixed(0)}K`} change="15.2%" icon={DollarSign} index={2} />
+            <MetricCard title="Total Revenue" value={formatCurrency(m.totalRevenue)} change="15.2%" icon={Banknote} index={2} />
             <MetricCard title="Total Vendors" value={m.totalVendors} icon={Store} index={3} />
           </div>
 
@@ -170,7 +171,7 @@ const AdminDashboard = () => {
                         </td>
                         <td className="py-4 px-6 text-foreground">{p.product}</td>
                         <td className="py-4 px-6 text-muted-foreground">{p.date}</td>
-                        <td className="py-4 px-6 font-bold text-foreground">${p.amount}</td>
+                        <td className="py-4 px-6 font-bold text-foreground">{formatCurrency(p.amount)}</td>
                         <td className="py-4 px-6"><StatusBadge status={p.status} /></td>
                       </tr>
                     ))}
@@ -208,7 +209,7 @@ const AdminDashboard = () => {
                         <div className="text-xs text-muted-foreground">{v.id}</div>
                       </td>
                       <td className="py-4 px-6 text-foreground font-medium">{v.products} items</td>
-                      <td className="py-4 px-6 font-bold text-foreground">${v.revenue.toLocaleString()}</td>
+                      <td className="py-4 px-6 font-bold text-foreground">{formatCurrency(v.revenue)}</td>
                       <td className="py-4 px-6"><StatusBadge status={v.status} /></td>
                       <td className="py-4 px-6 text-right">
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive opacity-0 group-hover:opacity-100 transition-opacity">
@@ -252,8 +253,8 @@ const AdminDashboard = () => {
                       <td className="py-4 px-6 text-muted-foreground">{user.email}</td>
                       <td className="py-4 px-6 lowercase">
                         <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${user.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-                            user.role === 'vendor' ? 'bg-blue-100 text-blue-700' :
-                              'bg-orange-100 text-orange-700'
+                          user.role === 'vendor' ? 'bg-blue-100 text-blue-700' :
+                            'bg-orange-100 text-orange-700'
                           }`}>
                           {user.role}
                         </span>
