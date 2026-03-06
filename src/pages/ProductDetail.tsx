@@ -3,10 +3,18 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Star, ShoppingCart, Heart, Truck, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { products } from "@/data/mockData";
+import ReviewSection from "@/components/storefront/ReviewSection";
+import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
+import { cn, formatCurrency } from "@/lib/utils";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const product = products.find((p) => p.id === id);
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
+  const isFavorited = product ? isInWishlist(product.id) : false;
 
   if (!product) {
     return (
@@ -55,9 +63,9 @@ const ProductDetail = () => {
           </div>
 
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-3xl font-bold text-foreground">${product.price}</span>
+            <span className="text-3xl font-bold text-foreground">{formatCurrency(product.price)}</span>
             {product.originalPrice && (
-              <span className="text-lg text-muted-foreground line-through">${product.originalPrice}</span>
+              <span className="text-lg text-muted-foreground line-through">{formatCurrency(product.originalPrice)}</span>
             )}
           </div>
 
@@ -68,18 +76,27 @@ const ProductDetail = () => {
           </p>
 
           <div className="flex gap-3 mb-8">
-            <Button size="lg" className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Button
+              size="lg"
+              className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold"
+              onClick={() => product && addToCart(product)}
+            >
               <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
             </Button>
-            <Button size="lg" variant="outline">
-              <Heart className="h-4 w-4" />
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => product && toggleWishlist(product)}
+              className={cn("transition-colors", isFavorited && "bg-accent/10 border-accent text-accent")}
+            >
+              <Heart className={cn("h-4 w-4 transition-all", isFavorited && "fill-accent")} />
             </Button>
           </div>
 
           <div className="space-y-3 border-t pt-6">
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <Truck className="h-4 w-4 text-accent" />
-              Free shipping on orders over $100
+              Free shipping on orders over ₦100,000
             </div>
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <RotateCcw className="h-4 w-4 text-accent" />
@@ -88,6 +105,13 @@ const ProductDetail = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Review Section */}
+      <ReviewSection
+        rating={product.rating}
+        totalReviews={product.reviews}
+        reviews={product.recentReviews || []}
+      />
     </div>
   );
 };

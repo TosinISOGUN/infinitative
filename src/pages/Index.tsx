@@ -7,7 +7,7 @@ import { products, categories } from "@/data/mockData";
 import heroBanner from "@/assets/hero-banner.jpg";
 
 const features = [
-  { icon: Truck, title: "Free Shipping", desc: "On orders over $100" },
+  { icon: Truck, title: "Free Shipping", desc: "On orders over ₦100,000" },
   { icon: Shield, title: "Secure Payment", desc: "100% protected" },
   { icon: Headphones, title: "24/7 Support", desc: "Always here to help" },
 ];

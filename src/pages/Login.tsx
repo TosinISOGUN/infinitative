@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AuthLayout from "@/components/AuthLayout";
 
@@ -105,13 +105,19 @@ const Login = () => {
             </Link>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-6" onClick={()=> {
-            navigate('/sign-up')
-          }}>
+          <p
+            className="text-center text-sm text-muted-foreground mt-6"
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
             Don't have an account?{" "}
-            <a href="#" className="text-accent hover:underline font-medium">
+            <Link
+              to="/signup"
+              className="text-accent hover:underline font-medium"
+            >
               Create one
-            </a>
+            </Link>
           </p>
         </motion.div>
       </AuthLayout>

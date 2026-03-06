@@ -9,21 +9,33 @@ import { Button } from "@/components/ui/button";
 const Products = () => {
   const [searchParams] = useSearchParams();
   const categoryFilter = searchParams.get("category");
+  const searchQuery = searchParams.get("search")?.toLowerCase() || "";
   const [selectedCategory, setSelectedCategory] = useState(categoryFilter || "all");
 
   useEffect(() => {
     setSelectedCategory(categoryFilter || "all");
   }, [categoryFilter]);
 
-  const filtered = selectedCategory === "all"
-    ? products
-    : products.filter((p) => p.category === selectedCategory);
+  const filtered = products.filter((p) => {
+    const matchesCategory = selectedCategory === "all" || p.category === selectedCategory;
+    const matchesSearch = !searchQuery ||
+      p.name.toLowerCase().includes(searchQuery) ||
+      p.description?.toLowerCase().includes(searchQuery) ||
+      p.category.toLowerCase().includes(searchQuery);
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="container py-8">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <h1 className="text-3xl font-bold text-foreground mb-2">All Products</h1>
-        <p className="text-muted-foreground mb-8">Discover our curated collection of premium products</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2">
+          {searchQuery ? `Search results for "${searchQuery}"` : "All Products"}
+        </h1>
+        <p className="text-muted-foreground mb-8">
+          {searchQuery
+            ? `Found ${filtered.length} products matching your search`
+            : "Discover our curated collection of premium products"}
+        </p>
       </motion.div>
 
       {/* Filters */}
@@ -59,7 +71,21 @@ const Products = () => {
 
       {filtered.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-muted-foreground">No products found in this category.</p>
+          <p className="text-xl font-semibold mb-2">No products found</p>
+          <p className="text-muted-foreground">
+            Try adjusting your search or filters to find what you're looking for.
+          </p>
+          <Button
+            variant="outline"
+            className="mt-6"
+            onClick={() => {
+              setSelectedCategory("all");
+              window.history.pushState({}, "", "/products");
+              window.location.reload(); // Simple way to clear search params for now
+            }}
+          >
+            Clear all filters
+          </Button>
         </div>
       )}
     </div>

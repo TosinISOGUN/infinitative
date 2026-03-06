@@ -43,38 +43,19 @@ const Account = () => {
           ))}
         </div>
 
-        {/* Order history */}
-        <h2 className="text-xl font-semibold text-foreground mb-4">Order History</h2>
-        <div className="bg-card rounded-lg border shadow-card overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b bg-secondary/50">
-                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Order ID</th>
-                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Product</th>
-                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Date</th>
-                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Total</th>
-                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order) => (
-                  <tr key={order.id} className="border-b last:border-0 hover:bg-secondary/30 transition-colors">
-                    <td className="py-3 px-4 font-medium text-foreground">{order.id}</td>
-                    <td className="py-3 px-4 text-foreground">{order.product}</td>
-                    <td className="py-3 px-4 text-muted-foreground">{order.date}</td>
-                    <td className="py-3 px-4 font-medium text-foreground">${order.total}</td>
-                    <td className="py-3 px-4"><StatusBadge status={order.status} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        {/* Recent Orders Link */}
+        <div className="bg-card rounded-lg border p-6 shadow-card hover:shadow-card-hover transition-shadow text-center">
+          <Package className="h-10 w-10 text-accent/20 mx-auto mb-3" />
+          <h2 className="text-xl font-semibold text-foreground mb-2">My Orders</h2>
+          <p className="text-muted-foreground text-sm mb-6">View and track your previous purchases</p>
+          <Link to="/orders">
+            <Button variant="outline">View Order History</Button>
+          </Link>
         </div>
 
-        <div className="mt-6 text-center">
+        <div className="mt-8 text-center">
           <Link to="/login">
-            <Button variant="outline">Sign Out</Button>
+            <Button variant="ghost" className="text-muted-foreground hover:text-destructive">Sign Out</Button>
           </Link>
         </div>
       </motion.div>

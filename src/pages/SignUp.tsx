@@ -124,15 +124,12 @@ const SignUp = () => {
 
           <p className="text-center text-sm text-muted-foreground mt-6">
             Already have an account?{" "}
-            <Button
-              variant="ghost"
-              onClick={() => {
-                navigate("/login");
-              }}
+            <Link
+              to="/login"
               className="text-accent hover:underline font-medium"
             >
               Login
-            </Button>
+            </Link>
           </p>
         </motion.div>
       </AuthLayout>
