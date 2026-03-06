@@ -44,12 +44,6 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
 
-  const [token, setToken] = useState<string | null>();
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, [pathname]);
   const { itemCount: cartCount } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
   const { user, logout, isAuthenticated } = useAuth();
@@ -85,11 +79,10 @@ export function Navbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium transition-colors hover:text-accent ${
-                  location.pathname === link.path
+                className={`text-sm font-medium transition-colors hover:text-accent ${location.pathname === link.path
                     ? "text-accent"
                     : "text-muted-foreground"
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>
@@ -257,10 +250,10 @@ export function Navbar() {
             </Tooltip>
             <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
+            </Button>
 
-           
-            {token ? (
+
+            {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
@@ -393,11 +386,10 @@ export function Navbar() {
                     key={link.path}
                     to={link.path}
                     onClick={() => setMobileOpen(false)}
-                    className={`text-sm font-medium py-2 ${
-                      location.pathname === link.path
+                    className={`text-sm font-medium py-2 ${location.pathname === link.path
                         ? "text-accent"
                         : "text-muted-foreground"
-                    }`}
+                      }`}
                   >
                     {link.label}
                   </Link>

@@ -5,29 +5,36 @@ import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AuthLayout from "@/components/AuthLayout";
 import { z } from "zod";
-import { registrationSchema } from "@/schema/registerationSchema";
+import { registrationSchema } from "@/schema/registrationSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
-type Role = "customer" | "vendor" | "admin";
+type CreateAccountType = z.infer<typeof registrationSchema>;
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState<Role>("customer");
   const navigate = useNavigate();
-
-  type CreateAccountType = z.infer<typeof registrationSchema>;
 
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<CreateAccountType>({
     resolver: zodResolver(registrationSchema),
     mode: "onBlur",
   });
 
-  const submit = (data: CreateAccountType) => {};
+  const onSubmit = async (data: CreateAccountType) => {
+    try {
+      // Mock registration logic
+      console.log("Registration data:", data);
+      toast.success("Account created successfully!");
+      navigate("/login");
+    } catch (error) {
+      toast.error("Failed to create account. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -35,7 +42,7 @@ const SignUp = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md"
+          className="w-full max-w-2xl"
         >
           <Link
             to="/"
@@ -52,12 +59,44 @@ const SignUp = () => {
           </p>
 
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSubmit(submit);
-            }}
+            onSubmit={handleSubmit(onSubmit)}
             className="space-y-4"
           >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="John"
+                  {...register("firstName")}
+                  className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+                {errors.firstName && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.firstName.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Doe"
+                  {...register("lastName")}
+                  className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+                {errors.lastName && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.lastName.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">
                 Email
@@ -69,56 +108,169 @@ const SignUp = () => {
                 className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
               />
               {errors.email && (
-                <p style={{ color: "red" }} className="text-sm">
+                <p className="text-sm text-destructive mt-1">
                   {errors.email.message}
                 </p>
               )}
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  placeholder="+234..."
+                  {...register("phoneNumber")}
+                  className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+                {errors.phoneNumber && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.phoneNumber.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  Country Code
+                </label>
+                <input
+                  type="text"
+                  placeholder="NG"
+                  {...register("countryCode")}
+                  className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+                {errors.countryCode && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.countryCode.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">
-                Password
+                Address
               </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  {...register('password')}
-                  className="w-full h-11 px-4 pr-10 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-              {errors.password && (
-                <p style={{ color: "red" }} className="text-sm">
-                  {errors.password.message}
+              <input
+                type="text"
+                placeholder="123 Street Name"
+                {...register("address")}
+                className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+              />
+              {errors.address && (
+                <p className="text-sm text-destructive mt-1">
+                  {errors.address.message}
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-muted-foreground">
-                <input type="checkbox" className="rounded border-input" />
-                Remember me
-              </label>
-              <a href="#" className="text-accent hover:underline">
-                Forgot password?
-              </a>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  City
+                </label>
+                <input
+                  type="text"
+                  placeholder="Lagos"
+                  {...register("city")}
+                  className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+                {errors.city && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.city.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  Region
+                </label>
+                <input
+                  type="text"
+                  placeholder="Lagos State"
+                  {...register("region")}
+                  className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+                {errors.region && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.region.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  Postal Code
+                </label>
+                <input
+                  type="text"
+                  placeholder="100001"
+                  {...register("postalCode")}
+                  className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+                {errors.postalCode && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.postalCode.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    {...register('password')}
+                    className="w-full h-11 px-4 pr-10 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                  Confirm Password
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  {...register('confirmPassword')}
+                  className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+                {errors.confirmPassword && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
             </div>
 
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="w-full h-11 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold mt-2"
             >
-              Create Account <ArrowRight className="ml-2 h-4 w-4" />
+              {isSubmitting ? "Creating Account..." : "Create Account"} <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </form>
 
