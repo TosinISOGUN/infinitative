@@ -1,76 +1,88 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Role } from "@/lib/types";
+import AuthLayout from "@/components/AuthLayout";
+import { z } from "zod";
+import { registrationSchema } from "@/schema/registerationSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type Role = "customer" | "vendor" | "admin";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState<Role>("customer");
   const navigate = useNavigate();
 
-  return (
-    <div className="min-h-screen flex">
-      {/* Left - Form */}
-      <div className="flex-1 flex items-center justify-center p-8 relative">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="absolute top-8 left-8 text-muted-foreground hover:text-foreground"
-          onClick={() => navigate(-1)}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back
-        </Button>
+  type CreateAccountType = z.infer<typeof registrationSchema>;
 
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<CreateAccountType>({
+    resolver: zodResolver(registrationSchema),
+    mode: "onBlur",
+  });
+
+  const submit = (data: CreateAccountType) => {};
+
+  return (
+    <>
+      <AuthLayout switchUI={true}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md"
         >
-          <Link to="/" className="text-2xl font-bold text-foreground mb-2 inline-block">Infinitative</Link>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Create an account</h1>
-          <p className="text-muted-foreground mb-8">Join the marketplace today</p>
+          <Link
+            to="/"
+            className="text-2xl font-bold text-foreground mb-2 inline-block"
+          >
+            Infinitative
+          </Link>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Create your account
+          </h1>
+          <p className="text-muted-foreground mb-8">
+            Join us today and start selling your products to a wide audience.
+            It's quick and easy to get started!
+          </p>
 
-          {/* Role selector */}
-          <div className="flex gap-2 mb-6">
-            {(["customer", "vendor"] as Role[]).map((r) => (
-              <button
-                key={r}
-                onClick={() => setRole(r)}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors capitalize ${role === r
-                  ? "bg-accent text-accent-foreground"
-                  : "bg-secondary text-muted-foreground hover:text-foreground"
-                  }`}
-              >
-                {r}
-              </button>
-            ))}
-          </div>
-
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(submit);
+            }}
+            className="space-y-4"
+          >
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Full Name</label>
-              <input
-                type="text"
-                placeholder="John Doe"
-                className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">
+                Email
+              </label>
               <input
                 type="email"
                 placeholder="you@example.com"
+                {...register("email")}
                 className="w-full h-11 px-4 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
               />
+              {errors.email && (
+                <p style={{ color: "red" }} className="text-sm">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Password</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">
+                Password
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
+                  {...register('password')}
                   className="w-full h-11 px-4 pr-10 rounded-md border bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
                 />
                 <button
@@ -78,57 +90,50 @@ const SignUp = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
+              {errors.password && (
+                <p style={{ color: "red" }} className="text-sm">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
-            <Button className="w-full h-11 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold mt-2">
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2 text-muted-foreground">
+                <input type="checkbox" className="rounded border-input" />
+                Remember me
+              </label>
+              <a href="#" className="text-accent hover:underline">
+                Forgot password?
+              </a>
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full h-11 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold mt-2"
+            >
               Create Account <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-6">
             Already have an account?{" "}
-            <Link to="/login" className="text-accent hover:underline font-medium">Sign In</Link>
+            <Link
+              to="/login"
+              className="text-accent hover:underline font-medium"
+            >
+              Login
+            </Link>
           </p>
         </motion.div>
-      </div>
-
-      {/* Right - Visual */}
-      <div className="hidden lg:flex flex-1 items-center justify-center p-12 relative overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=1744&auto=format&fit=crop"
-          alt="Premium Marketplace"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-primary/60 backdrop-blur-[2px]" />
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-center max-w-md relative z-10 bg-white/10 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl"
-        >
-          <div className="h-20 w-20 rounded-2xl bg-accent/20 flex items-center justify-center mx-auto mb-8 border border-white/10">
-            <span className="text-3xl font-bold text-accent">∞</span>
-          </div>
-          <h2 className="text-3xl font-bold text-white mb-4">
-            {role === "vendor" ? "Sell to millions" : "Shop premium items"}
-          </h2>
-          <p className="text-white/80 leading-relaxed">
-            {role === "vendor"
-              ? "Join thousands of vendors and grow your business with our powerful platform."
-              : "Discover unique products from trusted vendors around the globe."}
-          </p>
-          <div className="mt-8 flex justify-center gap-4">
-            <div className="h-1 w-4 rounded-full bg-white/30" />
-            <div className="h-1 w-12 rounded-full bg-accent" />
-            <div className="h-1 w-4 rounded-full bg-white/30" />
-          </div>
-        </motion.div>
-      </div>
-    </div>
+      </AuthLayout>
+    </>
   );
 };
 

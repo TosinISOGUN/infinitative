@@ -19,13 +19,13 @@ import ScrollToTop from "./components/ScrollToTop";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
-import SignUp from "./pages/SignUp";
 import About from "./pages/About";
 import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import NotFound from "./pages/NotFound";
+import SignUp from "./pages/SignUp";
 
 const queryClient = new QueryClient();
 
