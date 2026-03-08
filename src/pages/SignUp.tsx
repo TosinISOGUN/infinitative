@@ -5,7 +5,7 @@ import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AuthLayout from "@/components/AuthLayout";
 import { z } from "zod";
-import { registrationSchema } from "@/schema/registrationSchema";
+import { registrationSchema } from "@/schema/validationSchemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";

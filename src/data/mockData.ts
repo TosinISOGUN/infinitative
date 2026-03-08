@@ -1,4 +1,5 @@
 import { Product, Purchase, Vendor, Order, Review, User } from "@/lib/types";
+import { IMAGES } from "@/constants/images";
 
 export const categories = [
   "Electronics",
@@ -15,7 +16,7 @@ export const products: Product[] = [
     name: "Wireless Noise-Cancelling Headphones",
     price: 299990,
     originalPrice: 349990,
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80",
+    image: IMAGES.headphones,
     category: "Electronics",
     description: "Premium wireless headphones with active noise cancellation, 30-hour battery life, and superior sound quality.",
     rating: 4.8,
@@ -30,7 +31,7 @@ export const products: Product[] = [
     id: "2",
     name: "Smart Fitness Watch Pro",
     price: 199990,
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80",
+    image: IMAGES.watch,
     category: "Gadgets",
     description: "Advanced fitness tracking with GPS, heart rate monitor, and 7-day battery life.",
     rating: 4.6,
@@ -45,7 +46,7 @@ export const products: Product[] = [
     name: "Premium Leather Backpack",
     price: 149990,
     originalPrice: 189990,
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80",
+    image: IMAGES.backpack,
     category: "Fashion",
     description: "Handcrafted genuine leather backpack with laptop compartment and ergonomic design.",
     rating: 4.7,
@@ -55,11 +56,11 @@ export const products: Product[] = [
       { id: "rev-4", userId: "u4", userName: "Emily Chen", rating: 5, comment: "The leather quality is top-notch. It looks even better in person.", date: "2024-02-12" }
     ]
   },
-  { id: "4", name: "Minimalist Desk Lamp", price: 79990, image: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=400&q=80", category: "Home & Kitchen", description: "Sleek LED desk lamp with adjustable brightness and color temperature.", rating: 4.5, reviews: 334, vendor: "HomeLux" },
-  { id: "5", name: "Running Shoes Ultra Boost", price: 179990, originalPrice: 219990, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80", category: "Sports & Outdoor", description: "Lightweight running shoes with responsive cushioning and breathable mesh upper.", rating: 4.9, reviews: 2100, vendor: "SprintFit" },
-  { id: "6", name: "Organic Skincare Set", price: 89990, image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&q=80", category: "Health & Beauty", description: "Complete skincare routine with natural, organic ingredients.", rating: 4.4, reviews: 456, vendor: "GlowNatural" },
-  { id: "7", name: "Bluetooth Speaker Portable", price: 59990, originalPrice: 79990, image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&q=80", category: "Electronics", description: "Waterproof portable speaker with 360° sound and 12-hour playtime.", rating: 4.3, reviews: 789, vendor: "AudioTech" },
-  { id: "8", name: "Ceramic Coffee Mug Set", price: 34990, image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&q=80", category: "Home & Kitchen", description: "Set of 4 handmade ceramic mugs with modern geometric designs.", rating: 4.6, reviews: 223, vendor: "HomeLux" },
+  { id: "4", name: "Minimalist Desk Lamp", price: 79990, image: IMAGES.lamp, category: "Home & Kitchen", description: "Sleek LED desk lamp with adjustable brightness and color temperature.", rating: 4.5, reviews: 334, vendor: "HomeLux" },
+  { id: "5", name: "Running Shoes Ultra Boost", price: 179990, originalPrice: 219990, image: IMAGES.shoes, category: "Sports & Outdoor", description: "Lightweight running shoes with responsive cushioning and breathable mesh upper.", rating: 4.9, reviews: 2100, vendor: "SprintFit" },
+  { id: "6", name: "Organic Skincare Set", price: 89990, image: IMAGES.skincare, category: "Health & Beauty", description: "Complete skincare routine with natural, organic ingredients.", rating: 4.4, reviews: 456, vendor: "GlowNatural" },
+  { id: "7", name: "Bluetooth Speaker Portable", price: 59990, originalPrice: 79990, image: IMAGES.speaker, category: "Electronics", description: "Waterproof portable speaker with 360° sound and 12-hour playtime.", rating: 4.3, reviews: 789, vendor: "AudioTech" },
+  { id: "8", name: "Ceramic Coffee Mug Set", price: 34990, image: IMAGES.mug, category: "Home & Kitchen", description: "Set of 4 handmade ceramic mugs with modern geometric designs.", rating: 4.6, reviews: 223, vendor: "HomeLux" },
 ];
 
 export const purchases: Purchase[] = [

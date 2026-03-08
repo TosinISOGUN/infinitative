@@ -1,5 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
+import cartReducer from "./cartSlice";
+import wishlistReducer from "./wishlistSlice";
+import productReducer from "./productSlice";
 
 export const rootReducer = combineReducers({
-    // All reducers goes here.
+  cart: cartReducer,
+  wishlist: wishlistReducer,
+  products: productReducer,
 });
